@@ -1,10 +1,9 @@
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
-import ItemList from "./ItemList";
 
-export default function ItemListContainer({ mensaje }) {
-  const { categoryId } = useParams();
-  const [productos, setProductos] = useState([]);
+export default function ItemDetailContainer() {
+  const { id } = useParams();
+  const [producto, setProducto] = useState(null);
 
   const baseDeProductos = [
     { id: "1", name: "Volante Logitech G29", category: "volantes", precio: "$150.000" },
@@ -18,32 +17,27 @@ export default function ItemListContainer({ mensaje }) {
   
 
   useEffect(() => {
-    const fetchProductos = () => {
+    const fetchProducto = () => {
       return new Promise((resolve) => {
         setTimeout(() => {
-          if (categoryId) {
-            resolve(baseDeProductos.filter(p => p.category === categoryId));
-          } else {
-            resolve(baseDeProductos);
-          }
+          resolve(baseDeProductos.find((p) => p.id === id));
         }, 1000);
       });
     };
 
-    fetchProductos().then((res) => setProductos(res));
-  }, [categoryId]);
+    fetchProducto().then((res) => setProducto(res));
+  }, [id]);
+
+  if (!producto) {
+    return <p style={{ color: 'whitesmoke', textAlign: 'center' }}>Cargando producto...</p>;
+  }
 
   return (
     <div style={{ padding: '2rem', color: 'whitesmoke', textAlign: 'center' }}>
-      <h2 style={{ fontWeight: 'bold' }}>{mensaje}</h2>
-      {productos.length === 0 ? (
-        <p>Cargando productos...</p>
-      ) : (
-        <ItemList productos={productos} />
-      )}
+      <h2 style={{ fontWeight: 'bold' }}>{producto.name}</h2>
+      <p>Categoría: {producto.category}</p>
+      <p>Precio: {producto.precio}</p>
     </div>
   );
 }
-
-
 
