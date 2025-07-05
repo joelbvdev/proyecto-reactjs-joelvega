@@ -1,0 +1,24 @@
+"use client"
+
+import { collection, addDoc, serverTimestamp } from "firebase/firestore"
+import { db } from "./config"
+
+// Crear una nueva orden
+export const createOrder = async (orderData) => {
+  try {
+    console.log("Intentando crear orden:", orderData) // Debug
+
+    const docRef = await addDoc(collection(db, "orders"), {
+      ...orderData,
+      date: serverTimestamp(),
+      status: "pending",
+    })
+
+    console.log("Orden creada exitosamente con ID:", docRef.id) // Debug
+    return docRef.id
+  } catch (error) {
+    console.error("Error detallado creando orden:", error) // Debug
+    throw error
+  }
+}
+

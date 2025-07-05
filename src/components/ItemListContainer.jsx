@@ -1,45 +1,52 @@
+import { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
-import { useEffect, useState } from "react";
 import ItemList from "./ItemList";
+import { getProducts, getProductsByCategory } from "../firebase/productService";
 
 export default function ItemListContainer({ mensaje }) {
-  const { categoryId } = useParams();
   const [productos, setProductos] = useState([]);
-
-  const baseDeProductos = [
-    { id: "1", name: "Volante Logitech G29", category: "volantes", precio: "$150.000" },
-    { id: "2", name: "Volante Thrustmaster T300", category: "volantes", precio: "$250.000" },
-    { id: "3", name: "Volante Fanatec CSL", category: "volantes", precio: "$400.000" },
-    { id: "4", name: "Palanca Thrustmaster TH8A", category: "palancas", precio: "$180.000" },
-    { id: "5", name: "Palanca Logitech Driving Force", category: "palancas", precio: "$90.000" },
-    { id: "6", name: "Butaca Sparco R100", category: "butacas", precio: "$320.000" },
-    { id: "7", name: "Butaca OMP TRS-E", category: "butacas", precio: "$350.000" },
-  ];
-  
+  const [loading, setLoading] = useState(true);
+  const { categoryId } = useParams();
 
   useEffect(() => {
-    const fetchProductos = () => {
-      return new Promise((resolve) => {
-        setTimeout(() => {
-          if (categoryId) {
-            resolve(baseDeProductos.filter(p => p.category === categoryId));
-          } else {
-            resolve(baseDeProductos);
-          }
-        }, 1000);
-      });
+    const fetchProducts = async () => {
+      setLoading(true);
+      try {
+        let products;
+        if (categoryId) {
+          products = await getProductsByCategory(categoryId);
+        } else {
+          products = await getProducts();
+        }
+        setProductos(products);
+      } catch (error) {
+        console.error("Error cargando productos:", error);
+        setProductos([]);
+      } finally {
+        setLoading(false);
+      }
     };
 
-    fetchProductos().then((res) => setProductos(res));
+    fetchProducts();
   }, [categoryId]);
 
+  if (loading) {
+    return (
+      <div style={{ textAlign: "center", padding: "2rem" }}>
+        <p style={{ color: "#333", fontSize: "1.2rem" }}>Cargando productos...</p>
+      </div>
+    );
+  }
+
   return (
-    <div style={{ padding: '2rem', color: 'whitesmoke', textAlign: 'center' }}>
-      <h2 style={{ fontWeight: 'bold' }}>{mensaje}</h2>
-      {productos.length === 0 ? (
-        <p>Cargando productos...</p>
-      ) : (
+    <div style={{ padding: "2rem" }}>
+      <h2 style={{ color: "#333", textAlign: "center", marginBottom: "2rem" }}>
+        {mensaje || "Nuestros Productos"}
+      </h2>
+      {productos.length > 0 ? (
         <ItemList productos={productos} />
+      ) : (
+        <p style={{ textAlign: "center", color: "#666" }}>No hay productos disponibles.</p>
       )}
     </div>
   );
