@@ -1,5 +1,3 @@
-"use client"
-
 import { useState, useContext } from "react"
 import { CartContext } from "./CartContext"
 import { createOrder } from "../firebase/orderService"
@@ -80,10 +78,10 @@ export default function CheckoutForm() {
       const newOrderId = await createOrder(order)
 
       if (newOrderId) {
-        // ✅ PRIMERO mostrar confirmación, DESPUÉS vaciar carrito
+      
         setOrderId(newOrderId)
         setOrderComplete(true)
-        // NO vaciar el carrito aquí - lo haremos cuando el usuario haga clic en "Nueva compra"
+        
       }
     } catch (error) {
       console.error("Error:", error)
@@ -94,7 +92,7 @@ export default function CheckoutForm() {
   }
 
   const handleNewPurchase = () => {
-    // ✅ AHORA sí vaciar el carrito y resetear
+
     clearCart()
     setOrderComplete(false)
     setOrderId("")
@@ -102,7 +100,7 @@ export default function CheckoutForm() {
     setErrors({})
   }
 
-  // 🎯 MOSTRAR CARTEL DE CONFIRMACIÓN (SIN VACIAR CARRITO AÚN)
+
   if (orderComplete && orderId) {
     return (
       <div
@@ -274,7 +272,7 @@ export default function CheckoutForm() {
     )
   }
 
-  // 📝 FORMULARIO DE CHECKOUT (igual que antes)
+
   return (
     <div
       style={{

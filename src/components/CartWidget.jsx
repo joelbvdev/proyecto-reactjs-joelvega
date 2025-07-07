@@ -1,5 +1,3 @@
-"use client"
-
 import { useContext } from "react"
 import { CartContext } from "./CartContext"
 import { Link } from "react-router-dom"

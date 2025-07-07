@@ -1,7 +1,7 @@
 import { collection, getDocs, doc, getDoc, query, where } from "firebase/firestore";
 import { db } from "./config";
 
-// Obtener todos los productos
+
 export const getProducts = async () => {
   try {
     const querySnapshot = await getDocs(collection(db, "productos"));
@@ -16,7 +16,7 @@ export const getProducts = async () => {
   }
 };
 
-// Obtener un producto por ID
+
 export const getProductById = async (id) => {
   try {
     const docRef = doc(db, "productos", id);
@@ -34,7 +34,7 @@ export const getProductById = async (id) => {
   }
 };
 
-// Obtener productos por categoría
+
 export const getProductsByCategory = async (category) => {
   try {
     const q = query(collection(db, "productos"), where("category", "==", category));

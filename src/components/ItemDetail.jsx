@@ -1,5 +1,3 @@
-
-
 import { useState, useContext } from "react"
 import { CartContext } from "./CartContext"
 import ItemCount from "./ItemCount"

@@ -1,32 +1,30 @@
-"use client"
-
 import { Link } from "react-router-dom"
 
 export default function Item({ producto }) {
-  // Mapeo de imágenes reales por producto
+  
   const getProductImage = (producto) => {
-    // Mapeo específico por nombre de producto o ID
+    
     const imageMap = {
-      // VOLANTES
+      
       "volante-thrustmaster": "/images/volante-thrustmaster-t300.jpeg",
       "volante-logitech": "/images/volante-logitech-g29.jpeg",
       "volante-fanatec": "/images/volante-fanatec.jpeg",
 
-      // PALANCAS
+      
       "palanca-thrustmaster": "/images/palanca-thrustmaster-th8a.jpeg",
       "palanca-logitech": "/images/palanca-logitech-shifter.jpeg",
 
-      // BUTACAS
+      
       "butaca-omp": "/images/butaca-omp.jpeg",
       "butaca-sparco": "/images/butaca-sparco.jpeg",
     }
 
-    // Buscar por ID exacto primero
+    
     if (imageMap[producto.id]) {
       return imageMap[producto.id]
     }
 
-    // Si no encuentra por ID, buscar por categoría y nombre
+    
     const productName = producto.name?.toLowerCase() || ""
 
     if (producto.category === "volantes") {
@@ -39,7 +37,7 @@ export default function Item({ producto }) {
       if (productName.includes("fanatec")) {
         return imageMap["volante-fanatec"]
       }
-      // Default para volantes
+      
       return imageMap["volante-thrustmaster"]
     }
 
@@ -50,7 +48,7 @@ export default function Item({ producto }) {
       if (productName.includes("logitech") || productName.includes("driving force")) {
         return imageMap["palanca-logitech"]
       }
-      // Default para palancas
+      
       return imageMap["palanca-thrustmaster"]
     }
 
@@ -61,15 +59,15 @@ export default function Item({ producto }) {
       if (productName.includes("sparco")) {
         return imageMap["butaca-sparco"]
       }
-      // Default para butacas
+      
       return imageMap["butaca-omp"]
     }
 
-    // Fallback general
+    
     return "/images/volante-thrustmaster-t300.jpeg"
   }
 
-  // Función de respaldo para crear imagen con CSS (solo si falla la carga)
+  
   const createFallbackImage = (category) => {
     const categoryEmojis = {
       volantes: "🏎️",
@@ -107,7 +105,7 @@ export default function Item({ producto }) {
       onMouseEnter={(e) => (e.currentTarget.style.transform = "translateY(-2px)")}
       onMouseLeave={(e) => (e.currentTarget.style.transform = "translateY(0)")}
     >
-      {/* Contenedor de imagen con respaldo */}
+      {}
       <div
         style={{
           width: "100%",
@@ -122,27 +120,27 @@ export default function Item({ producto }) {
           overflow: "hidden",
         }}
       >
-        {/* Imagen real del producto */}
+        {}
         <img
           src={productImage || "/placeholder.svg"}
           alt={producto.name}
           style={{
             width: "100%",
             height: "100%",
-            objectFit: "contain", // Cambié a 'contain' para mostrar el producto completo
+            objectFit: "contain",
             position: "absolute",
             top: 0,
             left: 0,
             backgroundColor: "#ffffff",
           }}
           onError={(e) => {
-            // Si la imagen falla, mostrar el respaldo
+            
             e.target.style.display = "none"
             e.target.nextElementSibling.style.display = "flex"
           }}
         />
 
-        {/* Respaldo visual (oculto por defecto) */}
+        {}
         <div
           style={{
             display: "none",

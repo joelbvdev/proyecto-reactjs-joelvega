@@ -1,5 +1,3 @@
-"use client"
-
 export default function CartItem({ prod, removeItem }) {
   const precioNumerico = prod.precioNumerico || Number.parseInt(prod.precio.replace(/[$.,]/g, "")) || 0
 
